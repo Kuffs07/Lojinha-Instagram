@@ -1,0 +1,56 @@
+-- -----------------------------------------------------
+-- Table `lojinha`.`categorias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lojinha`.`categorias` (
+  `id_categoria` INT NOT NULL AUTO_INCREMENT,
+  `categoria` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_categoria`))
+
+-- -----------------------------------------------------
+-- Table `lojinha`.`produtos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lojinha`.`produtos` (
+  `id_produto` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `preço` FLOAT NULL DEFAULT NULL,
+  `descrição` VARCHAR(45) NULL DEFAULT NULL,
+  `categoria` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id_produto`),
+  INDEX `categoria_fk_idx` (`categoria` ASC) VISIBLE,
+  CONSTRAINT `categoria_fk`
+    FOREIGN KEY (`categoria`)
+    REFERENCES `lojinha`.`categorias` (`id_categoria`))
+
+-- -----------------------------------------------------
+-- Table `lojinha`.`usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lojinha`.`usuarios` (
+  `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`))
+
+-- -----------------------------------------------------
+-- Table `lojinha`.`compras_usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lojinha`.`compras_usuario` (
+  `id_compra` VARCHAR(45) NOT NULL,
+  `id_usuario_fez_a_compra` INT NULL DEFAULT NULL,
+  `nome_usuario` VARCHAR(45) NULL DEFAULT NULL,
+  `id_produto` INT NULL DEFAULT NULL,
+  `nome_produto` VARCHAR(45) NULL DEFAULT NULL,
+  `id_categoria` INT NULL DEFAULT NULL,
+  `categoria_produto` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_compra`),
+  INDEX `cid_prod_fk_idx` (`id_produto` ASC) VISIBLE,
+  INDEX `id_categoria_fk_idx` (`id_categoria` ASC) VISIBLE,
+  INDEX `id_compras_fk` (`id_usuario_fez_a_compra` ASC) VISIBLE,
+  CONSTRAINT `cid_prod_fk`
+    FOREIGN KEY (`id_produto`)
+    REFERENCES `lojinha`.`produtos` (`id_produto`),
+  CONSTRAINT `id_categoria_fk`
+    FOREIGN KEY (`id_categoria`)
+    REFERENCES `lojinha`.`produtos` (`categoria`),
+  CONSTRAINT `id_compras_fk`
+    FOREIGN KEY (`id_usuario_fez_a_compra`)
+    REFERENCES `lojinha`.`usuarios` (`id_usuario`))
